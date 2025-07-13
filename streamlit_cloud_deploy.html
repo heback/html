@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Streamlit Cloud 배포 완전 정복 가이드 (초보자용)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .step-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: var(--timeline-left-pos, 50%); /* Use CSS variable for positioning */
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #cbd5e1; /* cool-gray-300 */
+        }
+        .timeline-item {
+            position: relative;
+        }
+        .timeline-icon {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">Streamlit Cloud 배포 완전 정복 가이드</h1>
+            <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">코드를 웹 앱으로! 차근차근 따라하는 상세 배포 절차 (초보자용)</p>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="relative timeline">
+            <!-- Step 1: 완벽한 사전 준비 -->
+            <div class="mb-12 timeline-item">
+                <div class="timeline-icon w-12 h-12 bg-white dark:bg-gray-800 border-4 border-blue-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                </div>
+                <div class="ml-auto md:ml-0 md:w-5/12 p-4"></div>
+                <div class="mt-4 md:mt-0 md:w-5/12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg step-card md:ml-auto border-l-4 border-blue-500">
+                    <h2 class="text-2xl font-bold text-blue-500 dark:text-blue-400 mb-3">1. 완벽한 사전 준비</h2>
+                    <ul class="space-y-3 list-disc list-inside text-gray-600 dark:text-gray-300">
+                        <li><b>Streamlit 앱 (.py)</b>: 웹으로 만들고 싶은 파이썬 코드를 준비해요.</li>
+                        <li><b>GitHub 리포지토리</b>: 코드를 저장할 온라인 저장소예요. `app.py`와 `requirements.txt` 파일을 여기에 업로드(push)하세요.</li>
+                        <li><b>requirements.txt 파일</b>: 앱 실행에 필요한 라이브러리 목록이에요. 터미널에서 `pip freeze > requirements.txt` 명령어로 쉽게 만들 수 있어요.</li>
+                        <li><b>Streamlit Cloud 계정</b>: GitHub 계정으로 무료 가입할 수 있어요.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 2: 클라우드에 연결 -->
+            <div class="mb-12 timeline-item">
+                <div class="timeline-icon w-12 h-12 bg-white dark:bg-gray-800 border-4 border-green-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="md:w-5/12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg step-card md:mr-auto border-r-4 md:border-r-0 md:border-l-4 border-green-500">
+                    <h2 class="text-2xl font-bold text-green-500 dark:text-green-400 mb-3">2. 클라우드에 연결</h2>
+                    <p class="text-gray-600 dark:text-gray-300">Streamlit Cloud 로그인 후, <b>'New app'</b> 버튼을 클릭해요. 처음이라면 GitHub 계정을 연결하고 리포지토리 접근 권한을 허용해주세요.</p>
+                </div>
+                <div class="mr-auto md:mr-0 md:w-5/12 p-4"></div>
+            </div>
+
+            <!-- Step 3: 배포 정보 입력 -->
+            <div class="mb-12 timeline-item">
+                <div class="timeline-icon w-12 h-12 bg-white dark:bg-gray-800 border-4 border-purple-500 rounded-full flex items-center justify-center">
+                     <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                </div>
+                <div class="ml-auto md:ml-0 md:w-5/12 p-4"></div>
+                <div class="mt-4 md:mt-0 md:w-5/12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg step-card md:ml-auto border-l-4 border-purple-500">
+                    <h2 class="text-2xl font-bold text-purple-500 dark:text-purple-400 mb-3">3. 배포 정보 입력</h2>
+                    <ul class="space-y-3 list-disc list-inside text-gray-600 dark:text-gray-300">
+                        <li><b>Repository</b>: 내 GitHub 리포지토리 주소를 선택해요.</li>
+                        <li><b>Branch</b>: 코드가 있는 브랜치를 선택해요 (보통 `main`).</li>
+                        <li><b>Main file path</b>: 실행할 .py 파일 경로를 지정해요.</li>
+                        <li><b>(선택) Advanced settings</b>: 파이썬 버전이나 API 키 같은 비밀 값을 설정할 수 있어요.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Step 4: 마법의 'Deploy!' 버튼 -->
+            <div class="mb-12 timeline-item">
+                <div class="timeline-icon w-12 h-12 bg-white dark:bg-gray-800 border-4 border-red-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                </div>
+                <div class="md:w-5/12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg step-card md:mr-auto border-r-4 md:border-r-0 md:border-l-4 border-red-500">
+                     <h2 class="text-2xl font-bold text-red-500 dark:text-red-400 mb-3">4. 마법의 'Deploy!' 버튼</h2>
+                    <p class="text-gray-600 dark:text-gray-300"><b>'Deploy!'</b> 버튼을 누르면 배포가 시작돼요. Streamlit이 알아서 라이브러리를 설치하고 앱을 빌드해요. 실시간 빌드 과정을 로그 창에서 확인할 수 있어요.</p>
+                </div>
+                <div class="mr-auto md:mr-0 md:w-5/12 p-4"></div>
+            </div>
+
+            <!-- Step 5: 나만의 웹 앱 완성! -->
+            <div class="timeline-item">
+                <div class="timeline-icon w-12 h-12 bg-white dark:bg-gray-800 border-4 border-yellow-500 rounded-full flex items-center justify-center">
+                    <svg class="w-6 h-6 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m2 10h4m-2-2v4M19 5a2 2 0 00-2-2h-1a2 2 0 00-2 2v1a2 2 0 002 2h1a2 2 0 002-2V5zM8 19a2 2 0 00-2-2H5a2 2 0 00-2 2v1a2 2 0 002 2h1a2 2 0 002-2v-1z"></path></svg>
+                </div>
+                <div class="ml-auto md:ml-0 md:w-5/12 p-4"></div>
+                <div class="mt-4 md:mt-0 md:w-5/12 p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg step-card md:ml-auto border-l-4 border-yellow-500">
+                    <h2 class="text-2xl font-bold text-yellow-500 dark:text-yellow-400 mb-3">5. 나만의 웹 앱 완성!</h2>
+                    <p class="text-gray-600 dark:text-gray-300">"Your app is in the oven!" 같은 귀여운 메시지와 함께 잠시 기다리면 완성! 생성된 고유 URL을 친구나 동료에게 공유하고 자랑해보세요! � 대시보드에서 앱을 관리(재부팅, 로그 확인 등)할 수 있어요.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Tips Section -->
+        <div class="mt-20 pt-10 border-t-2 border-gray-200 dark:border-gray-700">
+            <h3 class="text-center text-3xl font-bold text-gray-900 dark:text-white mb-8">✨ 초보자를 위한 핵심 꿀팁!</h3>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-6 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                    <h4 class="font-bold text-lg mb-2 text-blue-800 dark:text-blue-300">`requirements.txt`는 정확하게</h4>
+                    <p class="text-blue-700 dark:text-blue-400">로컬 환경과 동일한 라이브러리 버전을 명시해야 오류가 줄어들어요.</p>
+                </div>
+                <div class="p-6 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                    <h4 class="font-bold text-lg mb-2 text-green-800 dark:text-green-300">파일 경로는 상대 경로로</h4>
+                    <p class="text-green-700 dark:text-green-400">데이터 파일(CSV, 이미지)을 불러올 땐, 상대 경로를 사용해야 클라우드에서도 잘 작동해요.</p>
+                </div>
+                <div class="p-6 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
+                    <h4 class="font-bold text-lg mb-2 text-purple-800 dark:text-purple-300">오류 발생 시 로그 확인</h4>
+                    <p class="text-purple-700 dark:text-purple-400">배포 실패 시, 로그(logs)를 꼼꼼히 읽어보면 원인을 쉽게 찾을 수 있어요.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Simple script to handle responsive timeline
+        const timelineItems = document.querySelectorAll('.timeline-item');
+
+        const isElementInViewport = (el) => {
+            const rect = el.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        };
+
+        const callbackFunc = () => {
+            for (let i = 0; i < timelineItems.length; i++) {
+                if (isElementInViewport(timelineItems[i])) {
+                    timelineItems[i].classList.add('in-view');
+                }
+            }
+        };
+
+        window.addEventListener('load', callbackFunc);
+        window.addEventListener('resize', callbackFunc);
+        window.addEventListener('scroll', callbackFunc);
+
+        // Adjust timeline for mobile
+        const adjustTimeline = () => {
+            const timelineEl = document.querySelector('.timeline');
+            if (!timelineEl) return; // Prevent error if timeline element is not found
+
+            if (window.innerWidth < 768) {
+                timelineEl.style.setProperty('--timeline-left-pos', '24px');
+                document.querySelectorAll('.timeline-item > div:nth-child(2)').forEach(el => el.style.display = 'none');
+                document.querySelectorAll('.timeline-item > div:nth-child(3)').forEach(el => {
+                    el.classList.remove('md:ml-auto');
+                    el.style.width = 'calc(100% - 60px)';
+                    el.style.marginLeft = '60px';
+                });
+                 document.querySelectorAll('.timeline-item > div:nth-child(3)[class*="md:mr-auto"]').forEach(el => {
+                    el.classList.remove('border-r-4', 'md:border-r-0', 'md:border-l-4');
+                    el.classList.add('border-l-4');
+                });
+                document.querySelectorAll('.timeline-icon').forEach(el => el.style.left = '24px');
+
+            } else {
+                 timelineEl.style.setProperty('--timeline-left-pos', '50%');
+                 document.querySelectorAll('.timeline-item > div').forEach(el => el.style.display = '');
+                 document.querySelectorAll('.timeline-item > div:nth-child(3)').forEach(el => {
+                    el.style.width = '';
+                    el.style.marginLeft = '';
+                 });
+                 document.querySelectorAll('.timeline-icon').forEach(el => el.style.left = '50%');
+            }
+        };
+
+        window.addEventListener('load', adjustTimeline);
+        window.addEventListener('resize', adjustTimeline);
+    </script>
+</body>
+</html>
+�
